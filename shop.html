@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Haya Toothstick Shop</title>
+  <script src="https://www.paypal.com/sdk/js?client-id=AfPjAwc4ITUL-wfkfSUHl8E7kb6MN2w2ASyaPlzLU7Xi5zcQBburj1gE0SvxZkoSHOVG_8iiPD58mytT&currency=USD&intent=capture"></script> <!-- PayPal SDK -->
+  <style>
+    body {
+      background-color: #e8f5e9;
+      font-family: Arial, sans-serif;
+    }
+    nav {
+      background-color: #2e7d32;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    #searchInput {
+      padding: 10px;
+      width: 50%;
+      margin: 20px auto;
+      display: block;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      background-color: white;
+      border-radius: 8px;
+    }
+    .product img {
+      width: 150px;
+      height: auto;
+    }
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .quantity-control button {
+      padding: 5px 10px;
+      font-size: 18px;
+    }
+    .quantity-control input {
+      width: 40px;
+      text-align: center;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+    .add-btn {
+      background: linear-gradient(to right, #4CAF50, #2E7D32);
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .add-btn:hover {
+      background: linear-gradient(to right, #66bb6a, #1b5e20);
+    }
+    footer {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 40px;
+    }
+    .footer-links a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .paypal-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <h1>Welcome to Hayacozy</h1>
+
+  <input type="text" id="searchInput" placeholder="Search for products...">
+
+  <!-- Product 1 -->
+  <div class="product">
+    <img src="neemstick2.jpeg" alt="Neem Sticks">
+    <h3>Fresh Neem Sticks (Pack of 50)</h3>
+    <p>Price: $24.00</p>
+    <div class="quantity-control">
+      <button onclick="decreaseQty('neemQty')">−</button>
+      <input type="text" id="neemQty" value="1" readonly>
+      <button onclick="increaseQty('neemQty')">+</button>
+      <button class="add-btn" onclick="renderPaypal('neem', 24, 'Fresh Neem Sticks (Pack of 50)')">Add</button>
+    </div>
+    <div id="paypal-neem" class="paypal-container"></div>
+  </div>
+
+  <!-- Product 2 -->
+  <div class="product">
+    <img src="karuvelamsticks.jpeg" alt="Karuvelam Sticks">
+    <h3>Fresh Karuvelam Sticks (Pack of 50)</h3>
+    <p>Price: $24.00</p>
+    <div class="quantity-control">
+      <button onclick="decreaseQty('karuvelamQty')">−</button>
+      <input type="text" id="karuvelamQty" value="1" readonly>
+      <button onclick="increaseQty('karuvelamQty')">+</button>
+      <button class="add-btn" onclick="renderPaypal('karuvelam', 24, 'Fresh Karuvelam Sticks (Pack of 50)')">Add</button>
+    </div>
+    <div id="paypal-karuvelam" class="paypal-container"></div>
+  </div>
+
+  <!-- Product 3 -->
+  <div class="product">
+    <img src="drumsticks.jpeg" alt="DrumSticks">
+    <h3>Fresh DrumSticks (Per kg)</h3>
+    <p>Price: $800.00</p>
+    <div class="quantity-control">
+      <button onclick="decreaseQty('drumsticksQty')">−</button>
+      <input type="text" id="drumsticksQty" value="1" readonly>
+      <button onclick="increaseQty('drumsticksQty')">+</button>
+      <button class="add-btn" onclick="renderPaypal('drumsticks', 800, 'Fresh DrumSticks (Per kg)')">Add</button>
+    </div>
+    <div id="paypal-drumsticks" class="paypal-container"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="#">Products</a>
+      <a href="contact.html">Contact</a>
+      <a href="terms.html">Terms and Conditions</a>
+    </div>
+    <p>&copy; 2025 Haya Naturals. All rights reserved.</p>
+  </footer>
+
+<script>
+  function increaseQty(id) {
+    const input = document.getElementById(id);
+    input.value = parseInt(input.value) + 1;
+  }
+
+  function decreaseQty(id) {
+    const input = document.getElementById(id);
+    if (parseInt(input.value) > 1) {
+      input.value = parseInt(input.value) - 1;
+    }
+  }
+
+  function renderPaypal(productId, unitPrice, productName) {
+    const qtyInput = document.getElementById(productId + 'Qty');
+    const quantity = parseInt(qtyInput.value);
+    const total = (unitPrice * quantity).toFixed(2);
+
+    const paypalDivId = 'paypal-' + productId;
+    document.getElementById(paypalDivId).innerHTML = '';
+
+    paypal.Buttons({
+      style: {
+        layout: 'vertical',
+        color: 'gold',
+        shape: 'rect',
+        label: 'paypal'
+      },
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            description: productName,
+            amount: {
+              value: total
+            }
+          }],
+          application_context: {
+            shipping_preference: "GET_FROM_FILE",
+            user_action: "PAY_NOW"
+          }
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        });
+      }
+    }).render('#' + paypalDivId);
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  const products = document.querySelectorAll('.product');
+
+  searchInput.addEventListener('keyup', function () {
+    const keyword = this.value.toLowerCase();
+    products.forEach(function (item) {
+      const name = item.querySelector('h3').textContent.toLowerCase();
+      item.style.display = name.includes(keyword) ? 'block' : 'none';
+    });
+  });
+</script>
+
+</body>
+</html>
